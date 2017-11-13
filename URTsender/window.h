@@ -15,6 +15,11 @@ public:
     explicit Window(QWidget *parent = 0);
     ~Window();
 
+private slots:
+    void on_snedButton_clicked();
+
+    void on_openButton_clicked();
+
 private:
     Ui::Window *ui;
 };

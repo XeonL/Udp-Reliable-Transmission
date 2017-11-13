@@ -12,3 +12,8 @@ Window::~Window()
 {
     delete ui;
 }
+
+void Window::on_startButton_clicked()
+{
+
+}

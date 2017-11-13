@@ -12,3 +12,13 @@ Window::~Window()
 {
     delete ui;
 }
+
+void Window::on_snedButton_clicked()
+{
+
+}
+
+void Window::on_openButton_clicked()
+{
+
+}
