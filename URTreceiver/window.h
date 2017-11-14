@@ -2,6 +2,8 @@
 #define WINDOW_H
 
 #include <QWidget>
+#include <QUdpSocket>
+#include "urtreceiver.h"
 
 namespace Ui {
 class Window;
@@ -20,6 +22,8 @@ private slots:
 
 private:
     Ui::Window *ui;
+    QUdpSocket *socket;
+    UrtReceiver *receiver;
 };
 
 #endif // WINDOW_H

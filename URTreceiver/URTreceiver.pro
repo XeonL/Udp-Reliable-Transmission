@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,10 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        window.cpp
+        window.cpp \
+    urtreceiver.cpp
 
 HEADERS += \
-        window.h
+        window.h \
+    urtreceiver.h
 
 FORMS += \
         window.ui
