@@ -13,7 +13,7 @@ UrtReceiver::UrtReceiver(QString const &ip,QObject *parent) : QObject(parent)
 void UrtReceiver::processPendingDatagram() {
     while(listenScoket->hasPendingDatagrams()) {
         QByteArray datagram;
-        datagram.resize(quint64(1024));
+        datagram.resize(quint64(1024*63+8));
         listenScoket->readDatagram(datagram.data(),datagram.size());
         qDebug() << "*********************************";
         qDebug() << datagram;
@@ -77,7 +77,7 @@ void UrtReceiver::processPendingDatagram() {
 
 
 
-            fileData.resize(qMin(quint64(1016),waitToWrite));
+            fileData.resize(qMin(quint64(1024*63),waitToWrite));
             if(sign == now + 1) {
                 qDebug() << "now is " << now;
                 qDebug() << "pkt " << sign << " is by written";

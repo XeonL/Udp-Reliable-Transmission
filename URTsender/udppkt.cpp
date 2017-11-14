@@ -7,7 +7,7 @@ UdpPkt::UdpPkt(QByteArray &block,QUdpSocket * sock,QString &ip,int portNum,quint
     socket = sock;
     ipAddress.setAddress(ip);
     port = portNum;
-    rtt = 100;
+    rtt = 400;
 //    data.resize(0);
     QDataStream out(&data,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_9);
@@ -30,7 +30,7 @@ void UdpPkt::send() {
     timer->start();
 }
 void UdpPkt::outTime() {
-    rtt *= 2;
+    //rtt *= 2;
     timer->stop();
     send();
 }

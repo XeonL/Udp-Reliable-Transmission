@@ -10,7 +10,7 @@ UrtSender::UrtSender(QString const &ip,int portNum,QString &filename,QObject *pa
     name = list[list.count()-1];
     file = new QFile(fileName);
     file->open(QFile::ReadOnly);
-    loadSize = 1016;
+    loadSize = 1024*63;
     totalBytes = file->size();
     bytesWritten = 0;
     bytesToWrite = totalBytes;
@@ -61,7 +61,7 @@ void UrtSender::tryToBegin() {
 //    QHostInfo info = QHostInfo::fromName(localHostName);
 //    qDebug() <<"IP Address: "<<info.addresses();
     QByteArray data;
-    data.resize(1024);
+    data.resize(1024*63+8);
     QDataStream out(&data,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_9);
     out << (quint64)1;
@@ -105,7 +105,7 @@ void UrtSender::tryToSend() {
 }
 void UrtSender::tryToEnd() {
     QByteArray data;
-    data.resize(1024);
+    data.resize(1024*63+8);
     QDataStream out(&data,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_9);
     out << (quint64)0;
