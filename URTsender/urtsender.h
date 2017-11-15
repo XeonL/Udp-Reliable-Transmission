@@ -40,7 +40,7 @@ private:
     QString name;
     QHash<quint64,UdpPkt *> * pktPool;
     int now = 0;
-    int max = 2000;
+    int max = 20;
     quint64 nowNum = 2;
     bool begin = false;
     bool end = false;

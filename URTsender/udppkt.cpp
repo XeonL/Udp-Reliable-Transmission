@@ -26,13 +26,17 @@ UdpPkt::~UdpPkt() {
     delete timer;
 }
 void UdpPkt::send() {
-    qDebug() << "send pkt " << num;
+    //qDebug() << "send pkt " << num;
     socket->writeDatagram(data,ipAddress,port);
     timer->setInterval(rtt);
     timer->start();
 }
 void UdpPkt::outTime() {
-    //rtt *= 2;
+    if(rtt < 1000) {
+        rtt *= 2;
+    } else {
+        rtt = 100;
+    }
     timer->stop();
     send();
 }
