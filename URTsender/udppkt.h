@@ -26,6 +26,7 @@ private:
     int rtt;
     QHostAddress ipAddress;
     int port;
+    quint64 num;
 };
 
 #endif // UDPPKT_H

@@ -17,6 +17,7 @@ signals:
 
 public slots:
 private:
+    void getACK(quint64);
     void processPendingDatagram();
     QUdpSocket *socket;
     QUdpSocket *listenScoket;
@@ -24,6 +25,8 @@ private:
     QHash<quint64,QByteArray> *buffer;
     quint64 size;
     quint64 waitToWrite;
+    int bufferSize = 3000;
+    int bufferUse = 0;
     bool isBegined = false;
     bool isEnded = false;
     QString fileName;

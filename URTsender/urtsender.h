@@ -39,9 +39,9 @@ private:
     QString	fileName;		//保存文件路径
     QString name;
     QHash<quint64,UdpPkt *> * pktPool;
-    int now = 1;
-    int max = 300;
-    quint64 nowNum = 1;
+    int now = 0;
+    int max = 2000;
+    quint64 nowNum = 2;
     bool begin = false;
     bool end = false;
     bool sendEnd = false;

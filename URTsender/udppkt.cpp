@@ -1,21 +1,22 @@
 #include "udppkt.h"
 
-UdpPkt::UdpPkt(QByteArray &block,QUdpSocket * sock,QString &ip,int portNum,quint64 num,QObject *parent)
+UdpPkt::UdpPkt(QByteArray &block,QUdpSocket * sock,QString &ip,int portNum,quint64 Num,QObject *parent)
 {
     timer = new QTimer();
     connect(timer,&QTimer::timeout,this,&UdpPkt::outTime);
     socket = sock;
     ipAddress.setAddress(ip);
     port = portNum;
-    rtt = 400;
+    num = Num;
+    rtt = 100;
 //    data.resize(0);
     QDataStream out(&data,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_9);
     out << num;
 
     data += block;
-    qDebug() << "*********************";
-    qDebug() << data;
+//    qDebug() << "*********************";
+//    qDebug() << data;
     send();
 }
 UdpPkt::~UdpPkt() {
@@ -25,6 +26,7 @@ UdpPkt::~UdpPkt() {
     delete timer;
 }
 void UdpPkt::send() {
+    qDebug() << "send pkt " << num;
     socket->writeDatagram(data,ipAddress,port);
     timer->setInterval(rtt);
     timer->start();

@@ -1,5 +1,5 @@
 #include "urtsender.h"
-
+#define SIZE 1024*32
 UrtSender::UrtSender(QString const &ip,int portNum,QString &filename,QObject *parent) : QObject(parent)
 {
     ipAddress = ip;
@@ -10,13 +10,10 @@ UrtSender::UrtSender(QString const &ip,int portNum,QString &filename,QObject *pa
     name = list[list.count()-1];
     file = new QFile(fileName);
     file->open(QFile::ReadOnly);
-    loadSize = 1024*63;
+    loadSize = SIZE;
     totalBytes = file->size();
     bytesWritten = 0;
     bytesToWrite = totalBytes;
-    now = 1;
-    max = 300;
-    nowNum = 2;
     pktPool = new QHash<quint64,UdpPkt *>;
     socket = new QUdpSocket();
     listenSocket = new QUdpSocket();
@@ -61,7 +58,7 @@ void UrtSender::tryToBegin() {
 //    QHostInfo info = QHostInfo::fromName(localHostName);
 //    qDebug() <<"IP Address: "<<info.addresses();
     QByteArray data;
-    data.resize(1024*63+8);
+    data.resize(SIZE+8);
     QDataStream out(&data,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_9);
     out << (quint64)1;
@@ -77,25 +74,19 @@ void UrtSender::tryToBegin() {
 }
 void UrtSender::tryToSend() {
     while(now!=max&&bytesToWrite!=0) {
+        now++;
         quint64 size = qMin(loadSize,bytesToWrite);
         QByteArray block = file->read(size);
         bytesToWrite -= size;
         bytesWritten += size;
-        now ++;
+//        now ++;
         UdpPkt * pkt = new UdpPkt(block,socket,ipAddress,
                                   port,nowNum);
         pktPool->insert(nowNum,pkt);
         qDebug() << "send pkt " << nowNum;
         qDebug() << "bytesWritten:" << bytesWritten;
         qDebug() << "bytesToWrite:" << bytesToWrite;
-
-
-
-        qDebug() << block;
-
-
-
-
+        //qDebug() << block;
         if(bytesToWrite==0) {
             sendEnd = true;
         } else {
@@ -105,7 +96,7 @@ void UrtSender::tryToSend() {
 }
 void UrtSender::tryToEnd() {
     QByteArray data;
-    data.resize(1024*63+8);
+    data.resize(SIZE+8);
     QDataStream out(&data,QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_5_9);
     out << (quint64)0;
@@ -121,6 +112,7 @@ void UrtSender::getACK(quint64 num) {
         now--;
         tryToSend();
     }
+    qDebug() << "目前还没有收到ack的pkt有" << now << " 个";
 }
 void UrtSender::messageControl(quint64 sign) {
     qDebug() << "get ACK " << sign;
